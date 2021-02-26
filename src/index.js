@@ -32,13 +32,16 @@ const sampleData = JSON.parse('{\n' +
     '    "cardId": { "S": "a#card#card_1" }\n' +
     '}');
 
-function parseData(data)
+
+
+exports.parseData = (data) =>
 {
     let rebuildObj = {};
     for (const [key, value] of Object.entries(data)) {
-        rebuildObj.push() = value;
+        rebuildObj.push({key: value});
         console.log(`${key}: ${value}`);
     }
+    return rebuildObj;
 }
 
 exports.createTransaction = (objetStream) => {

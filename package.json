@@ -1,17 +1,33 @@
 {
   "name": "eventsdata",
   "version": "1.0.0",
-  "description": "",
   "main": "src/index.js",
   "dependencies": {
     "dotenv": "^8.2.0",
     "knex": "^0.21.18",
     "mysql2": "^2.2.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
+  "jest": {
+    "verbose": true
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VinMilkbox/event-database.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VinMilkbox/event-database/issues"
+  },
+  "homepage": "https://github.com/VinMilkbox/event-database#readme",
+  "description": ""
 }
