@@ -1,0 +1,18 @@
+[
+	{
+		"pk": { "S": "a#card#card_1" },
+		"sk": { "S": "token#proc_1" },
+		"entityType": { "S": "Token" },
+		"createdDate": { "S": "2021-02-04T20:37:00" },
+		"partition": { "S": "a#card#1" },
+		"timestamp": { "S": "1612485499" }
+	},
+	{
+		"pk": { "S": "a#card#card_1" },
+		"sk": { "S": "token#proc_2" },
+		"entityType": { "S": "Token" },
+		"createdDate": { "S": "2021-02-05T20:37:00" },
+		"partition": { "S": "a#card#1" },
+		"timestamp": { "S": "1612485499" }
+	}
+]
