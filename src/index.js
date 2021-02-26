@@ -1,4 +1,6 @@
 const mysql = require("mysql2");
+const fs = require("fs");
+
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
@@ -11,37 +13,22 @@ const knex = require('knex')({
 
 const transactionsTable = 'transactions';
 const transactionDetails = 'transaction_details';
-const sampleData = JSON.parse('{\n' +
-    '    "pk": { "S": "a#trans#trans_1" },\n' +
-    '    "sk": { "S": "e#seq#0" },\n' +
-    '    "transactionId": { "S": "trans_1" },\n' +
-    '    "subTransactionId": { "S": "auth_1" },\n' +
-    '    "subTransactionType": { "S": "Auth" },\n' +
-    '    "customerId": { "S": "cust_1" },\n' +
-    '    "organisationId": { "S": "org_1" },\n' +
-    '    "processorId": { "S": "proc_1" },\n' +
-    '    "amount": { "S": "1" },\n' +
-    '    "currency": { "S": "usd" },\n' +
-    '    "type": { "S": "auth" },\n' +
-    '    "entityType": { "S": "ChargeEvent#Initialize" },\n' +
-    '    "createdDate": { "S": "2021-02-04T20:37:00" },\n' +
-    '    "partition": { "S": "e#trans#1" },\n' +
-    '    "timestamp": { "S": "1612485499" },\n' +
-    '    "gsi1pk": { "S": "part#2021-02-05T00#1" },\n' +
-    '    "gsi1sk": { "S": "1612485499" },\n' +
-    '    "cardId": { "S": "a#card#card_1" }\n' +
-    '}');
-
-
 
 exports.parseData = (data) =>
 {
-    let rebuildObj = {};
-    for (const [key, value] of Object.entries(data)) {
-        rebuildObj.push({key: value});
-        console.log(`${key}: ${value}`);
+    let parse = JSON.parse(JSON.stringify(data));
+    let rebuildObj = [];
+    for (const [key, value] of Object.entries(parse)) {
+        let sub = value;
+        if(typeof value == "object"){
+            for (const [key1, value1] of Object.entries(sub)) {
+                rebuildObj[key] = value;
+            }
+        }else{
+            rebuildObj[key] = value;
+        }
     }
-    return rebuildObj;
+    return Object.assign({}, rebuildObj);
 }
 
 exports.createTransaction = (objetStream) => {
@@ -72,5 +59,3 @@ exports.createTransaction = (objetStream) => {
     }));
     return knex(transactionsTable).insert(fieldRows).toSQL().toNative();
 }
-
-parseData(sampleData);
