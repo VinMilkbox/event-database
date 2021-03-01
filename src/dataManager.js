@@ -28,14 +28,14 @@ exports.parseData = async (data) => {
     return Object.assign({}, rebuildObj);
 }
 
-exports.createTransaction = async (objetStream) => {
-    /// NULL are field without date from objectStram
+exports.createTransaction = async (objectStream) => {
+    /// NULL are field without date from objectStream
     const fieldRows = {
-        transactionId: objetStream.transactionId, // This must be implemented on database.
-        type: objetStream.type,
-        status: objetStream.status,
-        amount: objetStream.amount,
-        currency: objetStream.currency, // this currency is customer currency?
+        transactionId: objectStream.transactionId, // This must be implemented on database.
+        type: objectStream.type,
+        status: objectStream.status,
+        amount: objectStream.amount,
+        currency: objectStream.currency, // this currency is customer currency?
         converted_amount: null, // related to currency conversion?
         converted_currency: null, // reference of the currency
         auth_amount: null, //  may is related to the type field? (auth, sale, capture)?
@@ -43,16 +43,16 @@ exports.createTransaction = async (objetStream) => {
         void_amount: null, //  may is related to the type field? (auth, sale, capture)?
         refund_amount: null, //  may is related to the type field? (auth, sale, capture)?
         created_at: new Date(),
-        card_id: objetStream.cardId,
-        account_id: null,
-        domain_name: null,
-        customer_id: objetStream.customerId,
-        province: null,
-        zip_code: null,
+        card_id: objectStream.cardId,
+        account_id: null,// missing on sample data
+        domain_name: null,// missing on sample data
+        customer_id: objectStream.customerId,
+        province: null,// missing on sample data
+        zip_code: null,// missing on sample data
         credit_card_last_4_digits: null, // missing on sample data
         credit_card_first_6_digits: null, // missing on sample data
         credit_card_number_masked: null, // missing on sample data
-        version: objetStream.aggregateVersion, // not sure of this
+        version: objectStream.aggregateVersion, // not sure of this
         source_reference_customer_id: null, // missing on sample data
         client_id: null, // missing on sample data
     };
