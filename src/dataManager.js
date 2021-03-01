@@ -37,7 +37,7 @@ exports.createTransaction = async (objectStream) => {
         amount: objectStream.amount,
         currency: objectStream.currency, // this currency is customer currency?
         converted_amount: null, // related to currency conversion?
-        converted_currency: null, // reference of the currency
+        converted_currency: null, // reference of the currency converted
         auth_amount: null, //  may is related to the type field? (auth, sale, capture)?
         sale_amount: null, //  may is related to the type field? (auth, sale, capture)?
         void_amount: null, //  may is related to the type field? (auth, sale, capture)?
