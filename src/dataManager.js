@@ -3,10 +3,10 @@ const mysql = require("mysql2");
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
-        host : 'mahees-test.cgnygp2k8wdr.eu-west-1.rds.amazonaws.com',//process.env.DB_HOSTNAME,
-        user : 'admin',//process.env.DB_USER,
-        password : 'GGjaEJWvwUAPzLv2eVKa',//process.env.DB_PASSWD,
-        database : 'vins-test'//process.env.DB_DATABASE
+        host : process.env.DB_HOSTNAME,
+        user : process.env.DB_USER,
+        password : process.env.DB_PASSWD,
+        database : process.env.DB_DATABASE
     }
 });
 
