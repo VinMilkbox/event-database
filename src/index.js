@@ -59,7 +59,16 @@ exports.createTransaction = (objetStream) => {
     return knex(transactionsTable).insert(fieldRows).toSQL().toNative();
 }
 
-
+exports.updateTransaction = (transactionId, objectStream) => {
+    return knex(transactionsTable)
+        .where({
+            transactionId: transactionId
+        })
+        .update({
+            status: objectStream.status,
+            thisKeyIsSkipped: undefined
+        });
+}
 
 exports.findTransaction = (transactionId) => {
     return knex(transactionsTable).where({
