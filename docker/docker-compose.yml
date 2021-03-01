@@ -1,0 +1,69 @@
+version: '3.1'
+services:
+  mysqli:
+    container_name: demo_mysql
+    build: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - mysql_volumes:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: split123fire
+    ports:
+      - '3308:3306'
+    networks:
+      default:
+        ipv4_address: 172.21.0.6
+#  php:
+#    container_name: container_php
+#    build: php-fpm
+#    working_dir:
+#      /var/www/symfony/
+#    ports:
+#      - '9002:9000'
+#    volumes:
+#      - ./../:/var/www/symfony
+#      - ./logs/symfony:/var/www/symfony/var/logs
+#    links:
+#      - mysqli
+#  redis:
+#    container_name: container_redis
+#    image: redis:alpine
+#    command: ["redis-server", "--bind", "redis", "--port", "6380"]
+#    ports:
+#      - "6380:6380"
+#    #  links:
+#    #    - php
+#    networks:
+#      default:
+#        ipv4_address: 172.21.0.6
+#  nginx:
+#    container_name: container_nginx
+#    build: nginx
+#    ports:
+#      - '80:80'
+#    links:
+#      - php
+#    volumes:
+#      - ./../:/var/www/symfony
+#      - ./logs/nginx/:/var/log/nginx:delegated
+#  mongodb:
+#    container_name: container_mongodb
+#    build: mongodb
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+#    ports:
+#      - '27017:27017'
+#    networks:
+#      default:
+#        ipv4_address: 172.21.0.3
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.21.0.0/16
+volumes:
+  mysql_volumes:

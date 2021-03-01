@@ -1,12 +1,10 @@
 const mysql = require("mysql2");
-const fs = require("fs");
-
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
         host : '127.0.0.1',
-        user : 'your_database_user',
-        password : 'your_database_password',
+        user : 'root',
+        password : 'split123fire',
         database : 'myapp_test'
     }
 });
@@ -19,10 +17,9 @@ exports.parseData = (data) =>
     let parse = JSON.parse(JSON.stringify(data));
     let rebuildObj = [];
     for (const [key, value] of Object.entries(parse)) {
-        let sub = value;
         if(typeof value == "object"){
-            for (const [key1, value1] of Object.entries(sub)) {
-                rebuildObj[key] = value;
+            for (const [key1, value1] of Object.entries(value)) {
+                rebuildObj[key] = value1;
             }
         }else{
             rebuildObj[key] = value;
@@ -32,10 +29,10 @@ exports.parseData = (data) =>
 }
 
 exports.createTransaction = (objetStream) => {
-    const fieldRows = events.map((m) => ({
-        type: sampleData.type.S,
-        status: sampleData.status,
-        amount: sampleData.amount,
+    const fieldRows = {
+        type: objetStream.type,
+        status: objetStream.status,
+        amount: objetStream.amount,
         currency: new Date().getTime(),
         converted_amount: true,
         converted_currency: true,
@@ -43,7 +40,7 @@ exports.createTransaction = (objetStream) => {
         sale_amount: true,
         void_amount: true,
         refund_amount: true,
-        created_at: true,
+        created_at: new Date(),
         card_id: true,
         account_id: true,
         domain_name: true,
@@ -56,6 +53,6 @@ exports.createTransaction = (objetStream) => {
         version: true,
         source_reference_customer_id: true,
         client_id: true,
-    }));
+    };
     return knex(transactionsTable).insert(fieldRows).toSQL().toNative();
 }
