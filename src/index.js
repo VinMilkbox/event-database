@@ -29,30 +29,32 @@ exports.parseData = (data) =>
 }
 
 exports.createTransaction = (objetStream) => {
+    /// NULL are field without date from objectStram
     const fieldRows = {
+        transactionId: objetStream.transactionId, // This must be implemented on database.
         type: objetStream.type,
         status: objetStream.status,
         amount: objetStream.amount,
-        currency: objetStream.currency,
-        converted_amount: null,
-        converted_currency: null,
-        auth_amount: true,
-        sale_amount: true,
-        void_amount: true,
-        refund_amount: true,
+        currency: objetStream.currency, // this currency is customer currency?
+        converted_amount: null, // related to currency conversion?
+        converted_currency: null, // reference of the currency
+        auth_amount: null, //  may is related to the type field? (auth, sale, capture)?
+        sale_amount: null, //  may is related to the type field? (auth, sale, capture)?
+        void_amount: null, //  may is related to the type field? (auth, sale, capture)?
+        refund_amount: null, //  may is related to the type field? (auth, sale, capture)?
         created_at: new Date(),
-        card_id: true,
-        account_id: true,
-        domain_name: true,
+        card_id: objetStream.cardId,
+        account_id: null,
+        domain_name: null,
         customer_id: objetStream.customerId,
-        province: true,
-        zip_code: true,
-        credit_card_last_4_digits: true,
-        credit_card_first_6_digits: true,
-        credit_card_number_masked: true,
-        version: true,
-        source_reference_customer_id: true,
-        client_id: true,
+        province: null,
+        zip_code: null,
+        credit_card_last_4_digits: null, // missing on sample data
+        credit_card_first_6_digits: null, // missing on sample data
+        credit_card_number_masked: null, // missing on sample data
+        version: objetStream.aggregateVersion, // not sure of this
+        source_reference_customer_id: null, // missing on sample data
+        client_id: null, // missing on sample data
     };
     return knex(transactionsTable).insert(fieldRows).toSQL().toNative();
 }
@@ -61,6 +63,6 @@ exports.createTransaction = (objetStream) => {
 
 exports.findTransaction = (transactionId) => {
     return knex(transactionsTable).where({
-        id: transactionId,
-    }).select('id');
+        transactionId: transactionId,
+    }).select();
 }
