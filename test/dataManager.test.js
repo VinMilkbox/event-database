@@ -1,13 +1,14 @@
-const indexTest = require('../src/index');
+require('iconv-lite').encodingExists('foo')
+const dataManagerTest = require('../src/dataManager');
 const sampleData = require('../sampleData/single.json');
 const logger = () => console.log('Testing.. ');
 
-describe('Test index', () => {
-    beforeEach(() => logger());
+/*describe('Test index', async () => {
+    //beforeEach(async () => logger());
 
-    test('Passing EventJson return OBJ', () => {
-        let testIt = indexTest.parseData(sampleData);
-    });
+    /!*test('Passing EventJson return OBJ', async () => {
+        let testIt = dataManagerTest.parseData(sampleData);
+    });*!/
 
     const sampleDataObj = {
         pk: "a#trans#trans_1",
@@ -33,8 +34,10 @@ describe('Test index', () => {
         cardId: "a#card#card_1",
         aggregateVersion: "2"
     };
-    test('Passing Obj Test return plain SQL', () => {
-        let testIt;
-        testIt = indexTest.createTransaction(sampleDataObj);
-    });
+
+});*/
+test('Passing Obj Test return plain SQL', async () => {
+    let testIt;
+    testIt = await dataManagerTest.findTransaction('1');
+    console.log(testIt);
 });

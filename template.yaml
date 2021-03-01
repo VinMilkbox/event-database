@@ -23,7 +23,7 @@ Resources:
         Properties:
             CodeUri: src/
             Runtime: nodejs14.x
-            Handler: index.lambdaHandler
+            Handler: index.handler
             Environment:
                 Variables:
                     NODE_ENV: development
