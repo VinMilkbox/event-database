@@ -2,10 +2,10 @@ const mysql = require("mysql2");
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
-        host : '127.0.0.1',
-        user : 'root',
-        password : 'split123fire',
-        database : 'myapp_test'
+        host : process.env.DB_HOSTNAME,
+        user : process.env.DB_USER,
+        password : process.env.DB_PASSWD,
+        database : process.env.DB_DATABASE
     }
 });
 
@@ -33,9 +33,9 @@ exports.createTransaction = (objetStream) => {
         type: objetStream.type,
         status: objetStream.status,
         amount: objetStream.amount,
-        currency: new Date().getTime(),
-        converted_amount: true,
-        converted_currency: true,
+        currency: objetStream.currency,
+        converted_amount: null,
+        converted_currency: null,
         auth_amount: true,
         sale_amount: true,
         void_amount: true,
@@ -44,7 +44,7 @@ exports.createTransaction = (objetStream) => {
         card_id: true,
         account_id: true,
         domain_name: true,
-        customer_id: true,
+        customer_id: objetStream.customerId,
         province: true,
         zip_code: true,
         credit_card_last_4_digits: true,
@@ -55,4 +55,12 @@ exports.createTransaction = (objetStream) => {
         client_id: true,
     };
     return knex(transactionsTable).insert(fieldRows).toSQL().toNative();
+}
+
+
+
+exports.findTransaction = (transactionId) => {
+    return knex(transactionsTable).where({
+        id: transactionId,
+    }).select('id');
 }

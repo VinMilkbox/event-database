@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lamdbda RDS mysql
+Parameters:
+    DBUser:
+        Type: String
+        Default: userName
+    DBName:
+        Type: String
+        Default: dbName
+    DBPassword:
+        Type: String
+        Default: password
+    DBHost:
+        Type: String
+        Default: databaseHost
+    SubnetIds:
+        Type: String
+        Default: subnet-0e066068,subnet-269a3a7c,subnet-bb83f5f3
+Resources:
+    SimpleLambdaFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: src/
+            Runtime: nodejs14.x
+            Handler: index.lambdaHandler
+            Environment:
+                Variables:
+                    NODE_ENV: development
+                    DB_DATABASE: !Ref DBName
+                    DB_HOST: !Ref DBHost
+                    DB_USER: !Ref DBUser
+                    DB_PASSWD: !Ref DBPassword
+                    REGION: eu-west-1
+            VpcConfig:
+                SecurityGroupIds:
+                    - sg-9fa84eef
+                SubnetIds:
+                    Fn::Split: [',', !Ref SubnetIds]
+            Layers:
+              - arn:aws:lambda:eu-west-1:275552291381:layer:mysql2:1

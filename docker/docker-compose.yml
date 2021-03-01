@@ -1,31 +1,19 @@
 version: '3.1'
 services:
-  mysqli:
-    container_name: demo_mysql
-    build: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    volumes:
-      - mysql_volumes:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: split123fire
-    ports:
-      - '3308:3306'
-    networks:
-      default:
-        ipv4_address: 172.21.0.6
-#  php:
-#    container_name: container_php
-#    build: php-fpm
-#    working_dir:
-#      /var/www/symfony/
-#    ports:
-#      - '9002:9000'
-#    volumes:
-#      - ./../:/var/www/symfony
-#      - ./logs/symfony:/var/www/symfony/var/logs
-#    links:
-#      - mysqli
+    mysqli:
+        container_name: demo_mysql
+        build: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        volumes:
+            - mysql_volumes:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: split123fire
+        ports:
+            - '3308:3306'
+        networks:
+            default:
+                ipv4_address: 172.21.0.6
 #  redis:
 #    container_name: container_redis
 #    image: redis:alpine
@@ -59,11 +47,11 @@ services:
 #      default:
 #        ipv4_address: 172.21.0.3
 networks:
-  default:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.21.0.0/16
+    default:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                -   subnet: 172.21.0.0/16
 volumes:
-  mysql_volumes:
+    mysql_volumes:
