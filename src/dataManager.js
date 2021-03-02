@@ -71,16 +71,22 @@ exports.updateTransaction = async (transactionId, objectStream) => {
         .update({
             status: objectStream.status,
         }).then((result) => {
+            knex.destroy();
             return result.id;
         }).catch((err) => {
             throw err;
         });
 }
 
-exports.findTransaction = async (transactionId) => {
-    return knex(transactionsTable).select().where({
-        id: transactionId
-    }).then((transaction) => {
+/**
+ *
+ * @param whereFilter Object
+ * @returns {Promise<boolean | void>}
+ */
+exports.findTransaction = async (whereFilter) => {
+    return knex(transactionsTable).select()
+        .where(whereFilter)
+        .then((transaction) => {
         knex.destroy();
         return transaction.length > 0;
     }).catch((err) => {

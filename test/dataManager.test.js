@@ -37,7 +37,7 @@ describe('Test index', () => {
 
 
     test('Checking findTransaction', async () => {
-        let result = await dataManagerTest.findTransaction('1');
+        let result = await dataManagerTest.findTransaction({id: 1});
         expect(result).toBeTruthy();
     });
 });
