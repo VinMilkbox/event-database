@@ -1,10 +1,11 @@
 require('iconv-lite').encodingExists('foo')
+const mysql = require('mysql2');
 const dataManagerTest = require('../src/dataManager');
 const sampleData = require('../sampleData/single.json');
-const logger = () => console.log('Testing.. ');
+/*const logger = (text) => console.log(text);
 
-/*describe('Test index', async () => {
-    //beforeEach(async () => logger());
+describe('Test index', () => {
+    beforeEach(() => logger());
 
     /!*test('Passing EventJson return OBJ', async () => {
         let testIt = dataManagerTest.parseData(sampleData);
@@ -34,10 +35,12 @@ const logger = () => console.log('Testing.. ');
         cardId: "a#card#card_1",
         aggregateVersion: "2"
     };
-
+    test('Checking findTransaction', async () => {
+        let result = await dataManagerTest.findTransaction('1');
+        console.log(result);
+    });
 });*/
-test('Passing Obj Test return plain SQL', async () => {
-    let testIt;
-    testIt = await dataManagerTest.findTransaction('1');
-    console.log(testIt);
+test('Checking findTransaction', async () => {
+    let result = await dataManagerTest.findTransaction('2');
+    console.log(result);
 });

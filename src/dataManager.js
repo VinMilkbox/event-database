@@ -3,16 +3,20 @@ const mysql = require("mysql2");
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
-        host : process.env.DB_HOSTNAME,
+        host : process.env.DB_HOST,
         user : process.env.DB_USER,
         password : process.env.DB_PASSWD,
         database : process.env.DB_DATABASE
     }
 });
+exports.dbClient = knex;
 
 const transactionsTable = 'transactions';
 const transactionDetails = 'transaction_details';
 
+exports.printDotEnv = () => {
+    console.log(process.env);
+}
 exports.parseData = async (data) => {
     let parse = JSON.parse(JSON.stringify(data));
     let rebuildObj = [];
@@ -66,15 +70,19 @@ exports.updateTransaction = async (transactionId, objectStream) => {
         })
         .update({
             status: objectStream.status,
+        }).then((result) => {
+            return result.id;
+        }).catch((err) => {
+            throw err;
         });
 }
 
 exports.findTransaction = async (transactionId) => {
-    let result = false;
-    knex(transactionsTable).select().where({
-            id: transactionId
-        }).then((transaction) => {
-            result = transaction.length;
-        });
-    return result;
+    return knex(transactionsTable).select().where({
+        id: transactionId
+    }).then((transaction) => {
+        return transaction.length > 0;
+    }).catch((err) => {
+        throw err;
+    });
 }
