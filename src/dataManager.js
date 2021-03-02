@@ -32,6 +32,11 @@ exports.parseData = async (data) => {
     return Object.assign({}, rebuildObj);
 }
 
+/**
+ *
+ * @param objectStream
+ * @returns {Promise<TResult extends DeferredKeySelection.Any ? Knex.ResolveTableType<DeferredKeySelection.ResolveOne<TResult>> : (TResult extends DeferredKeySelection.Any[] ? Knex.ResolveTableType<DeferredKeySelection.ResolveOne<TResult[0]>>[] : (TResult extends infer I[] ? UnknownToAny<Knex.ResolveTableType<I>>[] : UnknownToAny<Knex.ResolveTableType<TResult>>)) | void>}
+ */
 exports.createTransaction = async (objectStream) => {
     /// NULL are field without date from objectStream
     const fieldRows = {
@@ -67,6 +72,11 @@ exports.createTransaction = async (objectStream) => {
     });
 }
 
+/**
+ *  This will update the transaction
+ * @param objectStream
+ * @returns {Promise<T | void>}
+ */
 exports.updateTransaction = async (objectStream) => {
     return knex(transactionsTable)
         .where({
