@@ -61,22 +61,20 @@ exports.createTransaction = async (objectStream) => {
         client_id: null, // missing on sample data
     };
     return knex(transactionsTable).insert(fieldRows).then((result) => {
-        knex.destroy();
-        return result.id;
+        return result;
     }).catch((err) => {
         throw err;
     });
 }
 
-exports.updateTransaction = async (transactionId, objectStream) => {
-    knex(transactionsTable)
+exports.updateTransaction = async (objectStream) => {
+    return knex(transactionsTable)
         .where({
-            transactionId: transactionId
+            transaction_id: objectStream.transactionId
         })
         .update({
             status: objectStream.status,
         }).then((result) => {
-            knex.destroy();
             return result.id;
         }).catch((err) => {
             throw err;

@@ -26,18 +26,22 @@ const sampleDataObj = {
     cardId: "a#card#card_1",
     aggregateVersion: "2",
 };
-describe('Test index', () => {
+
+describe('Test dataManager', () => {
+    let id;
     test('Passing EventJson return OBJ', async () => {
-        let testIt = dataManagerTest.parseData(sampleData);
-        //expect(testIt).toBe(sampleDataObj);
+        let dataSample = dataManagerTest.parseData(sampleData);
     });
     test('Checking createTransaction', async () => {
         let result = await dataManagerTest.createTransaction(sampleDataObj);
-        console.log(result);
+        expect(result).toBeTruthy();
+        id = result[0];
     });
 
     test('Checking findTransaction', async () => {
-        let result = await dataManagerTest.findTransaction({id: 1});
+        let result = await dataManagerTest.findTransaction({
+            id: id
+        });
         expect(result).toBeTruthy();
     });
 });
