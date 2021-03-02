@@ -35,8 +35,8 @@ exports.parseData = async (data) => {
 exports.createTransaction = async (objectStream) => {
     /// NULL are field without date from objectStream
     const fieldRows = {
-        transactionId: objectStream.transactionId, // This must be implemented on database.
-        type: objectStream.type,
+        transaction_id: objectStream.transactionId, // This must be implemented on database.
+        type: objectStream.entityType,
         status: objectStream.status,
         amount: objectStream.amount,
         currency: objectStream.currency, // this currency is customer currency?
@@ -46,7 +46,7 @@ exports.createTransaction = async (objectStream) => {
         sale_amount: null, //  may is related to the type field? (auth, sale, capture)?
         void_amount: null, //  may is related to the type field? (auth, sale, capture)?
         refund_amount: null, //  may is related to the type field? (auth, sale, capture)?
-        created_at: new Date(),
+        created_at: new Date().getTime(),
         card_id: objectStream.cardId,
         account_id: null,// missing on sample data
         domain_name: null,// missing on sample data
@@ -60,7 +60,12 @@ exports.createTransaction = async (objectStream) => {
         source_reference_customer_id: null, // missing on sample data
         client_id: null, // missing on sample data
     };
-    return knex(transactionsTable).insert(fieldRows).toSQL().toNative();
+    return knex(transactionsTable).insert(fieldRows).then((result) => {
+        knex.destroy();
+        return result.id;
+    }).catch((err) => {
+        throw err;
+    });
 }
 
 exports.updateTransaction = async (transactionId, objectStream) => {
