@@ -81,6 +81,7 @@ exports.findTransaction = async (transactionId) => {
     return knex(transactionsTable).select().where({
         id: transactionId
     }).then((transaction) => {
+        knex.destroy();
         return transaction.length > 0;
     }).catch((err) => {
         throw err;
