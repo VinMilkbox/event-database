@@ -1,5 +1,4 @@
 require('iconv-lite').encodingExists('foo')
-const mysql = require('mysql2');
 const dataManagerTest = require('../src/dataManager');
 const sampleData = require('../sampleData/single.json');
 const sampleDataObj = {
@@ -29,20 +28,38 @@ const sampleDataObj = {
 
 describe('Test dataManager', () => {
     let id;
-    test('Passing EventJson return OBJ', async () => {
-        let dataSample = dataManagerTest.parseData(sampleData);
-    });
-    test('Checking createTransaction', async () => {
+
+    /*test('Checking createTransaction', async () => {
         let result = await dataManagerTest.createTransaction(sampleDataObj);
         expect(result).toBeTruthy();
         id = result[0];
     });
 
-    test('Checking findTransaction', async () => {
+    test('Test single method findTransaction', async () => {
         let result = await dataManagerTest.findTransaction({
             id: id
         });
         expect(result).toBeTruthy();
+    });
+
+    test('Test single method findTransaction', async () => {
+        let result = await dataManagerTest.updateTransaction({
+            id: id
+        });
+        expect(result).toBeTruthy();
+    });*/
+
+    test('Wrapping up all methods', async () => {
+        let dataSample = dataManagerTest.parseData(sampleData);
+        let find = await dataManagerTest.findTransaction({transaction_id: dataSample.transactionId});
+        if(find){
+            dataSample.status = 'Updated';
+            let update = await dataManagerTest.updateTransaction(dataSample);
+            await dataManagerTest.dbClient.destroy();
+        }else {
+            let insert = await dataManagerTest.createTransaction(sampleDataObj);
+            await dataManagerTest.dbClient.destroy();
+        }
     });
 });
 

@@ -17,7 +17,7 @@ const transactionDetails = 'transaction_details';
 exports.printDotEnv = () => {
     console.log(process.env);
 }
-exports.parseData = async (data) => {
+exports.parseData = (data) => {
     let parse = JSON.parse(JSON.stringify(data));
     let rebuildObj = [];
     for (const [key, value] of Object.entries(parse)) {
@@ -35,11 +35,11 @@ exports.parseData = async (data) => {
 /**
  *
  * @param objectStream
- * @returns {Promise<TResult extends DeferredKeySelection.Any ? Knex.ResolveTableType<DeferredKeySelection.ResolveOne<TResult>> : (TResult extends DeferredKeySelection.Any[] ? Knex.ResolveTableType<DeferredKeySelection.ResolveOne<TResult[0]>>[] : (TResult extends infer I[] ? UnknownToAny<Knex.ResolveTableType<I>>[] : UnknownToAny<Knex.ResolveTableType<TResult>>)) | void>}
+ * @returns {Promise<Knex.QueryBuilder<{transaction_id: string|string|*, amount: string|PaymentCurrencyAmount|*, credit_card_first_6_digits: null, converted_currency: null, created_at: number, type: string, version: string, card_id: string, zip_code: null, client_id: null, credit_card_number_masked: null, auth_amount: null, void_amount: null, domain_name: null, account_id: null, credit_card_last_4_digits: null, province: null, source_reference_customer_id: null, converted_amount: null, refund_amount: null, currency: string|string|*, customer_id: string, status: *, sale_amount: null}, number[]>>}
  */
-exports.createTransaction = async (objectStream) => {
+exports.createTransaction = (objectStream) => {
     /// NULL are field without date from objectStream
-    const fieldRows = {
+    const fieldsRows = {
         transaction_id: objectStream.transactionId, // This must be implemented on database.
         type: objectStream.entityType,
         status: objectStream.status,
@@ -65,17 +65,13 @@ exports.createTransaction = async (objectStream) => {
         source_reference_customer_id: null, // missing on sample data
         client_id: null, // missing on sample data
     };
-    return knex(transactionsTable).insert(fieldRows).then((result) => {
-        return result;
-    }).catch((err) => {
-        throw err;
-    });
+    return knex(transactionsTable).insert(fieldsRows);
 }
 
 /**
- *  This will update the transaction
+ *
  * @param objectStream
- * @returns {Promise<T | void>}
+ * @returns {Promise<Knex.QueryBuilder<TRecord, number>>}
  */
 exports.updateTransaction = async (objectStream) => {
     return knex(transactionsTable)
@@ -84,10 +80,6 @@ exports.updateTransaction = async (objectStream) => {
         })
         .update({
             status: objectStream.status,
-        }).then((result) => {
-            return result.id;
-        }).catch((err) => {
-            throw err;
         });
 }
 
@@ -96,13 +88,12 @@ exports.updateTransaction = async (objectStream) => {
  * @param whereFilter Object
  * @returns {Promise<boolean | void>}
  */
-exports.findTransaction = async (whereFilter) => {
+exports.findTransaction = (whereFilter) => {
     return knex(transactionsTable).select()
         .where(whereFilter)
         .then((transaction) => {
-        knex.destroy();
-        return transaction.length > 0;
-    }).catch((err) => {
-        throw err;
-    });
+            return transaction.length > 0;
+        }).catch((err) => {
+            throw err;
+        });
 }
