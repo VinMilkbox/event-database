@@ -54,10 +54,10 @@ describe('Test dataManager', () => {
         let find = await dataManagerTest.findTransaction({transaction_id: dataSample.transactionId});
         if(find){
             dataSample.status = 'Updated';
-            let update = await dataManagerTest.updateTransaction(dataSample);
+            await dataManagerTest.updateTransaction(dataSample);
             await dataManagerTest.dbClient.destroy();
         }else {
-            let insert = await dataManagerTest.createTransaction(sampleDataObj);
+            await dataManagerTest.createTransaction(sampleDataObj);
             await dataManagerTest.dbClient.destroy();
         }
     });
