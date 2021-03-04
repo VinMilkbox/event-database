@@ -23,7 +23,7 @@ exports.printDotEnv = () => {
 /**
  *
  * @param objectStream
- * @returns {{transaction_id: string, amount: *, credit_card_first_6_digits: null, converted_currency: null, created_at: number, type: *, version: *, card_id: *, zip_code: null, client_id: null, credit_card_number_masked: null, auth_amount: null, void_amount: null, domain_name: null, account_id: null, credit_card_last_4_digits: null, province: null, source_reference_customer_id: null, converted_amount: null, refund_amount: null, currency: *, customer_id: *, status, sale_amount: null}}
+ * @returns {{created_at: *, type: *, zip_code: null, client_id: null, auth_amount: *, void_amount: null, domain_name: null, province: null, source_reference_customer_id: null, refund_amount: null, currency: *, transaction_id: string, amount: *, credit_card_first_6_digits: null, exchange_rate: null, version: *, card_id: *, converted_to_usd_amount: null, credit_card_number_masked: null, entity_type: *, account_id: null, credit_card_last_4_digits: null, customer_id: *, status, sale_amount: null}}
  */
 exports.transactionsFields = (objectStream) => {
     return {
@@ -61,8 +61,9 @@ function toTimestamp(strDate){
 }
 
 /**
+ *
  * @param objectStream
- * @returns {{processor_status_code: *, master_id: null, processor_transaction_meta: *, source_reference_meta: null, customer_country: null, gsi1pk: *, converted_currency: null, created_at: *, type, client_id: null, domain_name: null, partition: *, updated_at: number, source_reference_customer_id: null, processor_id: null, currency: *, source_reference_trans_id: null, transaction_id: string, amount: *, credit_card_first_6_digits: null, gsi1sk: *, processor_cvv_result: *, version: *, card_id: *, processor_message: *, credit_card_number_masked: null, processor_transaction_id: *, entity_type: *, account_id: null, credit_card_last_4_digits: null, converted_amount: null, customer_id: *, processor_auth_code: *, status}}
+ * @returns {{processor_status_code: *, master_id: null, processor_transaction_meta: *, source_reference_meta: null, customer_country: null, gsi1pk: *, created_at: *, type, client_id: null, sub_transaction_id: *, domain_name: null, updated_at: number, source_reference_customer_id: null, processor_id: null, currency: *, source_reference_trans_id: null, transaction_id: string, amount: *, credit_card_first_6_digits: null, gsi1sk: *, processor_cvv_result: *, exchange_rate: null, version: *, card_id: *, converted_to_usd_amount: null, processor_message: *, credit_card_number_masked: null, processor_transaction_id: *, entity_type: *, account_id: null, credit_card_last_4_digits: null, customer_id: *, processor_auth_code: *, status}}
  */
 exports.transactionDetailsFields = (objectStream) => {
     return {
