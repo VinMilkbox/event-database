@@ -15,13 +15,13 @@ const camelToSnakeCase = str => str.replace(/[A-Z]/g, letter => `_${letter.toLow
 
 exports.getTransactionsTable = () => { return 'transactions'};
 exports.getTransactionDetailsTable = () => { return 'transaction_details'};
-
+exports.getCardsTable = () => { return 'cards_event'};
 exports.printDotEnv = () => {
     console.log(process.env);
 }
 
 /**
- *
+ * annotation
  * @param objectStream
  * @returns {{created_at: *, type: *, zip_code: null, client_id: null, auth_amount: *, void_amount: null, domain_name: null, province: null, source_reference_customer_id: null, refund_amount: null, currency: *, transaction_id: string, amount: *, credit_card_first_6_digits: null, exchange_rate: null, version: *, card_id: *, converted_to_usd_amount: null, credit_card_number_masked: null, entity_type: *, account_id: null, credit_card_last_4_digits: null, customer_id: *, status, sale_amount: null}}
  */
@@ -60,6 +60,16 @@ function toTimestamp(strDate){
     return dataInt/1000;
 }
 
+exports.cardsFields = (objectStream) => {
+    return {
+        pk: objectStream.pk,
+        sk: objectStream.sk,
+        entity_type: objectStream.entityType,
+        partition_text: objectStream.partitionText,
+        timestamp: objectStream.timestamp,
+        created_date: objectStream.createdDate
+    }
+};
 /**
  *
  * @param objectStream
@@ -175,6 +185,16 @@ exports.findTransaction = (referTable, whereFilter) => {
         });
 }
 
+exports.findCards = (whereFilter) => {
+    return knex(this.getCardsTable()).select()
+        .where(whereFilter)
+        .then((card) => {
+            return card.length > 0;
+        }).catch((err) => {
+            throw err;
+        });
+}
+
 exports.findSubTransaction = (referTable, where, andWhere) => {
     return knex(referTable).select()
         .where(where)
@@ -185,3 +205,7 @@ exports.findSubTransaction = (referTable, where, andWhere) => {
             throw err;
         });
 }
+
+exports.createCards = (referTable, fieldsRows) => {
+    return knex(referTable).insert(fieldsRows);
+};

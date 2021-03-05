@@ -74,7 +74,25 @@ describe('Test dataManager', () => {
                 );
             }
         }
+    });
+
+    test('Cards events', async () => {
+        let parse = JSON.parse(JSON.stringify(sampleCardsData));
+        for (const [key, value] of Object.entries(parse)) {
+            let dataSample = dataManagerTest.parseData(value);
+            let findTransaction = await dataManagerTest.findCards({
+                pk: dataSample.pk,
+                sk: dataSample.sk
+            });
+            if(!findTransaction){
+                await dataManagerTest.createCards(dataManagerTest.getCardsTable(),dataManagerTest.cardsFields(dataSample));
+            }
+        }
+    });
+
+    test('Close connection', async () => {
         await dataManagerTest.dbClient.destroy();
     });
 });
+
 
