@@ -195,6 +195,13 @@ exports.findCards = (whereFilter) => {
         });
 }
 
+/**
+ *
+ * @param referTable
+ * @param where
+ * @param andWhere
+ * @returns {Promise<boolean | void>}
+ */
 exports.findSubTransaction = (referTable, where, andWhere) => {
     return knex(referTable).select()
         .where(where)
@@ -206,6 +213,12 @@ exports.findSubTransaction = (referTable, where, andWhere) => {
         });
 }
 
+/**
+ *
+ * @param referTable
+ * @param fieldsRows
+ * @returns {Knex.QueryBuilder<TRecord, number[]>}
+ */
 exports.createCards = (referTable, fieldsRows) => {
     return knex(referTable).insert(fieldsRows);
 };
